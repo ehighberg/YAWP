@@ -1,65 +1,75 @@
 # YAWP
 
-# Project Overview
-
-## Project Schedule
-
-This schedule will be used to keep track of your progress throughout the week and align with our expectations.  
-
-You are **responsible** for scheduling time with your squad to seek approval for each deliverable by the end of the corresponding day, excluding `Saturday` and `Sunday`.
-
-|  Day | Deliverable | Status
-|---|---| ---|
-|Jan 2rd| Project Prompt | Incomplete
-|Jan 3rd| Wireframes / Priority Matrix / Functional Components | Incomplete
-|Jan 5th| Core Application Structure (HTML, CSS, etc.) | Incomplete
-|Jan 6th| Pseudocode / actual code | Incomplete
-|Jan 7th| Initial Clickable Model  | Incomplete
-|Jan 8th| MVP | Incomplete
-|Jan 9th| Present | Incomplete
-
 
 ## Project Description
 
-Use this section to describe your final project and perhaps any links to relevant sites that help convey the concept and\or functionality.
+YAWP is a simple weather service querying app, with native generation and rendering of [climate maps](https://openweathermap.org/weathermap?basemap=map&cities=false&layer=temperature&lat=30&lon=-20&zoom=3) (pressure / temperature). 
+
 
 ## Wireframes
 
-Upload images of wireframe to cloudinary and add the link here with a description of the specific wireframe.
+#### TODO
+
+
+#### MVP 
+
+- Find and use external api (Open Weather and Mapbox)
+- Render data on page (popup at user's search location, and a few other places nearby)
+- Save favorite locations for later
+
+#### PostMVP 
+
+- Retrieve weather forecasts
+- Simplest possible temp / wind model for native forecasting ( <6 hours)
+- User filtering of returned data, with option to continously display a couple fields for each pin
+
+
+## Project Schedule
+
+|  Day | Deliverable | Status
+|---|---| ---|
+|Jan 2rd| Project Prompt / Priority Matrix | Incomplete
+|Jan 3rd| Wireframes / File Organization | Incomplete
+|Jan 5th| Main Page (Current weather at user, search) | Incomplete
+|Jan 6th| Map View (pins at search location and ~12 more in box) | Incomplete
+|Jan 7th| MVP (Rendered climate map, saved favorites) | Incomplete
+|Jan 8th| Forecasts / Info Filtering | Incomplete
+|Jan 9th| Present | Incomplete
+
+
+## Timeframes
+| Component | Priority | Estimated Time | Time Invested | Actual Time |
+| --- | :---: |  :---: | :---: | :---: |
+| HTML structure | H | 2hrs | 0hrs | 0hrs |
+| Basic styling | H | 3hrs | | |
+| Current weather at user | H | 3hrs | | |
+| Search bar | H | 0.5hrs | | |
+| Map searched location | H | 3hrs | | |
+| Responsive CSS / map size | H | 2hrs | | |
+| Clickable pins nearby | M | 2hrs | | |
+| Saving favorite searches | M | 1.5hrs | | |
+| Render temperature gradient | H | 4hrs | | |
+| Other climate gradients | M | 1hr | | |
+| Pressure fronts | L | 3hrs | | |
+| Get forecasts from API | H | 2hrs | | |
+| User filtered data | M | 1.5hrs | | |
+| Put some data at each pin | L | 3hrs | | |
+| Animated wind / fronts | L | 4hrs | |
+
 
 ## Priority Matrix
 
-Include a full list of features that have been prioritized based on the `Time and Importance` Matrix.  
+![the matrix](https://git.generalassemb.ly/ehighberg/YAWP/docs/priority_matrix.png)
 
 
 ## API Data Sample
 
-Show us a snippet of JSON returned by your API so we know you can access it and get the info you need
+
+![weather query](https://git.generalassemb.ly/ehighberg/YAWP/docs/weather_query.png)
 
 
-### MVP/PostMVP - 5min
+![background map](https://git.generalassemb.ly/ehighberg/YAWP/docs/base_map.png)
 
-The functionality will then be divided into two separate lists: MPV and PostMVP.  Carefully decided what is placed into your MVP as the client will expect this functionality to be implemented upon project completion.  
-
-#### MVP 
-
-- Find and use external api 
-- Render data on page 
-- Allow user to choose favorites 
-
-#### PostMVP 
-
-- Add second API
-- Use local storage to save user favorites
-
-
-Time frames are also key in the development cycle.  You have limited time to code all phases of the game.  Your estimates can then be used to evalute game possibilities based on time needed and the actual time you have before game must be submitted. It's always best to pad the time by a few hours so that you account for the unknown so add and additional hour or two to each component to play it safe.
-
-| Component | Priority | Estimated Time | Time Invested | Actual Time |
-| --- | :---: |  :---: | :---: | :---: |
-| Adding Form | H | 3hrs| 3.5hrs | 3.5hrs |
-| Working with API | H | 3hrs| 2.5hrs | 2.5hrs |
-| Total | H | 6hrs| 5hrs | 5hrs |
 
 
 ## Code Snippet
@@ -74,4 +84,3 @@ function reverse(string) {
 
 ## Change Log
  Use this section to document what changes were made and the reasoning behind those changes.  
-
