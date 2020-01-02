@@ -1,0 +1,17 @@
+                                                       
+ Priority|                   Responsive Styling        
+         |                  ⚫      ⚫ Basic HTML/CSS    
+         |                     ⚫ Display Weather       
+         |                                             
+         |                            ⚫ Map view       
+         |            ⚫ Get Forecasts                  
+         |                           ⚫ Render gradients
+         |                                             
+         |            ⚫ Filtered results               
+         |                                             
+         |                                             
+         |                    ⚫ Pressure Fronts        
+         |                        ⚫ Animated fronts    
+         |                                             
+         +---------------------------------            
+                                     Time              
