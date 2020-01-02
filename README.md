@@ -59,16 +59,16 @@ YAWP is a simple weather service querying app, with native generation and render
 
 ## Priority Matrix
 
-![the matrix](https://git.generalassemb.ly/ehighberg/YAWP/docs/priority_matrix.png "priorities")
+![the matrix](https://git.generalassemb.ly/ehighberg/YAWP/blob/master/docs/priority_matrix.png "priorities")
 
 
 ## API Data Sample
 
 
-![weather query](https://git.generalassemb.ly/ehighberg/YAWP/docs/weather_query.png "weather query")
+![weather query](https://git.generalassemb.ly/ehighberg/YAWP/blob/master/docs/weather_query.png "weather query")
 
 
-![background map](https://git.generalassemb.ly/ehighberg/YAWP/docs/base_map.png "background map")
+![background map](https://git.generalassemb.ly/ehighberg/YAWP/blob/master/docs/base_map.png "background map")
 
 
 
