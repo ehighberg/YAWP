@@ -1,0 +1,46 @@
+body {
+  text-align: center;
+  width: 100%;
+  font-family: 'Merriweather', serif;
+  background-color: #baf7f7;
+}
+
+canvas {
+  margin: 0 auto;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: lightcyan;
+  padding-top: 0.25em;
+  padding-bottom: 0.1em;
+}
+
+header {
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  flex-flow: column;
+}
+
+header, main, footer {
+  display: flex;
+}
+
+main {
+  align-items: center;
+}
+
+.fa {
+  color: black;
+}
+
+.spacer {
+  padding: 0 0.5em;
+}
+
+#contact {
+  width: 100%;
+  font-size: small;
+}

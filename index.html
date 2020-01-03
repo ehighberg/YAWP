@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="src/reset.css" type="text/css">
   <link rel="stylesheet" href="src/style.css" type="text/css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Merriweather&display=swap" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Merriweather&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -24,19 +24,21 @@
     <form id='save-load-filter'>
       <input type='button' value='Save' id='save-query'>
 
-      <select id='load-query' name='load-query' onchange='this.form.submit()'>
+      <select id='load-query' name='load-query'>
         <option value='load'>TBD: Load</option>
+        <option value='placeholder'>spam</option>
       </select>
 
       <select id='map-overlay' name='map-overlay'>
-        <option value='current-temp'>TBD: Filter</option>
+        <option value='current-temp'>TBD: Overlay</option>
+        <option value='precip'>Radar</option>
       </select>
     </form>
   </header>
 
 
   <main>
-    <div id='map-container'></div>
+    <canvas id='canvas'></canvas>
     <section id='weather-info'>
       <div id='current-weather'></div>
       <div id='weather-forecast'></div>
@@ -47,7 +49,9 @@
   <footer>
     <p id='contact'>
       ©2020 Errol Highberg
+      <span class='spacer'></span>
       <a href='mailto:errol.highberg@gmail.com'><i class='fa fa-envelope'></i></a>
+      <span class='spacer'></span>
       <a href='https://github.com/ehighberg' target='_blank'><i class='fa fa-github-square'></i></a>
     </p>
   </footer>
