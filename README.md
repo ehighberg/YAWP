@@ -16,12 +16,14 @@ YAWP is a simple weather service querying app, with native generation and render
 - Find and use external api (Open Weather and Mapbox)
 - Render data on page (popup at user's search location, and a few other places nearby)
 - Save favorite locations for later
+- Temp overlay on map
 
-#### PostMVP 
+#### Post-MVP 
 
 - Retrieve weather forecasts
 - Simplest possible temp / wind model for native forecasting ( <6 hours)
 - User filtering of returned data, with option to continously display a couple fields for each pin
+- Get user location from browser, search for weather at their location when page loads
 
 
 ## Project Schedule
@@ -30,7 +32,7 @@ YAWP is a simple weather service querying app, with native generation and render
 |---|---| ---|
 |Jan 2rd| Project Prompt / Priority Matrix | Incomplete
 |Jan 3rd| Wireframes / File Organization | Incomplete
-|Jan 5th| Main Page (Current weather at user, search) | Incomplete
+|Jan 5th| Main Page (searchbar, current weather) | Incomplete
 |Jan 6th| Map View (pins at search location and ~12 more in box) | Incomplete
 |Jan 7th| MVP (Rendered climate map, saved favorites) | Incomplete
 |Jan 8th| Forecasts / Info Filtering | Incomplete
@@ -42,8 +44,7 @@ YAWP is a simple weather service querying app, with native generation and render
 | --- | :---: |  :---: | :---: | :---: |
 | HTML structure | H | 2hrs | 0hrs | 0hrs |
 | Basic styling | H | 3hrs | | |
-| Current weather at user | H | 3hrs | | |
-| Search bar | H | 0.5hrs | | |
+| Display searched weather | H | 3hrs | | |
 | Map searched location | H | 3hrs | | |
 | Responsive CSS / map size | H | 2hrs | | |
 | Clickable pins nearby | M | 2hrs | | |
@@ -53,6 +54,7 @@ YAWP is a simple weather service querying app, with native generation and render
 | Pressure fronts | L | 3hrs | | |
 | Get forecasts from API | H | 2hrs | | |
 | User filtered data | M | 1.5hrs | | |
+| Get user location from browser | M | 2hrs | | |
 | Put some data at each pin | L | 3hrs | | |
 | Animated wind / fronts | L | 4hrs | |
 
@@ -83,4 +85,8 @@ function reverse(string) {
 ```
 
 ## Change Log
- Use this section to document what changes were made and the reasoning behind those changes.  
+
+### [0.0.1] - 2020-01-03
+- Added mobile wireframe
+- Moved user location detection to post-MVP
+
