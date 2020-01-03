@@ -8,7 +8,7 @@ YAWP is a simple weather service querying app, with native generation and render
 
 ## Wireframes
 
-![mobile wireframe](https://git.generalassemb.ly/ehighberg/YAWP/blob/master/docs/mobile_wireframe.png "mobile wireframe")
+![mobile wireframe](https://res.cloudinary.com/ehighberg/image/upload/v1578063616/mobile_wireframe_nfppxz.png "mobile wireframe")
 
 
 #### MVP 
@@ -61,16 +61,16 @@ YAWP is a simple weather service querying app, with native generation and render
 
 ## Priority Matrix
 
-![the matrix](https://git.generalassemb.ly/ehighberg/YAWP/blob/master/docs/priority_matrix.png "priorities")
+![the matrix](https://res.cloudinary.com/ehighberg/image/upload/v1578063616/priority_matrix_p8qxye.png "priorities")
 
 
 ## API Data Sample
 
 
-![weather query](https://git.generalassemb.ly/ehighberg/YAWP/blob/master/docs/weather_query.png "weather query")
+![weather query](https://res.cloudinary.com/ehighberg/image/upload/v1578063616/weather_query_wmgffh.png "weather query")
 
 
-![background map](https://git.generalassemb.ly/ehighberg/YAWP/blob/master/docs/base_map.png "background map")
+![background map](https://res.cloudinary.com/ehighberg/image/upload/v1578063616/base_map_wgqmgm.png "background map")
 
 
 
@@ -89,4 +89,3 @@ function reverse(string) {
 ### [0.0.1] - 2020-01-03
 - Added mobile wireframe
 - Moved user location detection to post-MVP
-
