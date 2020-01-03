@@ -36,6 +36,11 @@ main {
   color: black;
 }
 
+.precip {
+  display: flex;
+  flex-flow: row;
+}
+
 .spacer {
   padding: 0 0.5em;
 }
@@ -43,4 +48,9 @@ main {
 #contact {
   width: 100%;
   font-size: small;
+}
+
+#weather-info {
+  display: flex;
+  flex-flow: row;
 }

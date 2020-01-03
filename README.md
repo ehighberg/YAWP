@@ -44,7 +44,7 @@ YAWP is a simple weather service querying app, with native generation and render
 | --- | :---: |  :---: | :---: | :---: |
 | HTML structure | H | 2hrs | 1.75hrs | 1.5hrs |
 | Basic styling | H | 3hrs | 1hrs | |
-| Display searched weather | H | 3hrs | | |
+| Display searched weather | H | 3hrs | 2.5hrs | |
 | Map searched location | H | 3hrs | | |
 | Responsive CSS / map size | H | 2hrs | | |
 | Clickable pins nearby | M | 2hrs | | |
