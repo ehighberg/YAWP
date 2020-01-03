@@ -6,20 +6,28 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+
   <link rel="stylesheet" href="src/reset.css" type="text/css">
   <link rel="stylesheet" href="src/style.css" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Merriweather&display=swap" rel="stylesheet"> 
 </head>
 
 <body>
   <header>
-    <form>
-      <input id='user-search-query' type='text' name='user-search-query' placeholder='City / Zip / Lat, Long' size='17' autofocus>
+    <form id='search-form'>
+      <input id='user-search-query' type='text' name='user-search-query' placeholder='City / Zip / Lat, Long' size='17'
+        autofocus>
       <input type='submit' value='Search' id='submit-search'>
-      <br>
+    </form>
+
+    <form id='save-load-filter'>
       <input type='button' value='Save' id='save-query'>
-      <select id='load-query' name='load-query'>
+
+      <select id='load-query' name='load-query' onchange='this.form.submit()'>
         <option value='load'>TBD: Load</option>
       </select>
+
       <select id='map-overlay' name='map-overlay'>
         <option value='current-temp'>TBD: Filter</option>
       </select>
@@ -27,8 +35,26 @@
   </header>
 
 
-  <script src="https://unpkg.com/axios/dist/axios.min.js" async defer></script>
-  <script src="src/script.js" type="text/javascript" charset="utf-8" async defer></script>
+  <main>
+    <div id='map-container'></div>
+    <section id='weather-info'>
+      <div id='current-weather'></div>
+      <div id='weather-forecast'></div>
+    </section>
+  </main>
+
+
+  <footer>
+    <p id='contact'>
+      ©2020 Errol Highberg
+      <a href='mailto:errol.highberg@gmail.com'><i class='fa fa-envelope'></i></a>
+      <a href='https://github.com/ehighberg' target='_blank'><i class='fa fa-github-square'></i></a>
+    </p>
+  </footer>
+
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="src/script.js" type="text/javascript" charset="utf-8"></script>
 
 </body>
 
