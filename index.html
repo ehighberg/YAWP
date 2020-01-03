@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>YAWP</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="src/reset.css" type="text/css">
+  <link rel="stylesheet" href="src/style.css" type="text/css">
+</head>
+
+<body>
+  <header>
+    <form>
+      <input id='user-search-query' type='text' name='user-search-query' placeholder='City / Zip / Lat, Long' size='17' autofocus>
+      <input type='submit' value='Search' id='submit-search'>
+      <br>
+      <input type='button' value='Save' id='save-query'>
+      <select id='load-query' name='load-query'>
+        <option value='load'>TBD: Load</option>
+      </select>
+      <select id='map-overlay' name='map-overlay'>
+        <option value='current-temp'>TBD: Filter</option>
+      </select>
+    </form>
+  </header>
+
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js" async defer></script>
+  <script src="src/script.js" type="text/javascript" charset="utf-8" async defer></script>
+
+</body>
+
+</html>
