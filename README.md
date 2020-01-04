@@ -30,9 +30,9 @@ YAWP is a simple weather service querying app, with native generation and render
 
 |  Day | Deliverable | Status
 |---|---| ---|
-|Jan 2rd| Project Prompt / Priority Matrix | Incomplete
-|Jan 3rd| Wireframes / File Organization | Incomplete
-|Jan 5th| Main Page (searchbar, current weather) | Incomplete
+|Jan 2rd| Project Prompt / Priority Matrix | Complete
+|Jan 3rd| Wireframes / File Organization | Complete
+|Jan 5th| Main Page (searchbar, current weather) | Complete
 |Jan 6th| Map View (pins at search location and ~12 more in box) | Incomplete
 |Jan 7th| MVP (Rendered climate map, saved favorites) | Incomplete
 |Jan 8th| Forecasts / Info Filtering | Incomplete
@@ -45,7 +45,7 @@ YAWP is a simple weather service querying app, with native generation and render
 | HTML structure | H | 2hrs | 1.75hrs | 1.5hrs |
 | Basic styling | H | 3hrs | 1hrs | |
 | Display searched weather | H | 3hrs | 3.5hrs | |
-| Map searched location | H | 3hrs | | |
+| Map searched location | H | 3hrs | 4hrs | |
 | Responsive CSS / map size | H | 2hrs | | |
 | Clickable pins nearby | M | 2hrs | | |
 | Saving favorite searches | M | 1.5hrs | | |

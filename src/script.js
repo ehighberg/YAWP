@@ -1,5 +1,5 @@
-const apiUrl = "http://api.openweathermap.org/data/2.5/"
-const apiKey = '&appid=' + '3e1f7aa5c8683821e7604c5eb70b0985'
+const weatherApiUrl = "http://api.openweathermap.org/data/2.5/"
+const weatherApiKey = '&appid=' + '3e1f7aa5c8683821e7604c5eb70b0985'
 
 const fieldsToDisplay = ['temp', 'precip', 'wind', 'clouds', 'humidity']
 
@@ -24,6 +24,14 @@ const windDirMap = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N']
 
 const cloudCoverMap = ['Clear', 'Partly cloudy', 'Mostly cloudy', 'Overcast']
 
+const mapApiUrl = 'https://api.mapbox.com/styles/v1/mapbox/light-v10/static/'
+
+const mapApiKey = '?access_token=pk.eyJ1IjoiZWhpZ2hiZXJnIiwiYSI6ImNrNHgycGxmNjB1dTQzbG9wdmloOGRtN3UifQ.13kapeks0t3GQOmTUv6fQg'
+
+let zoomLevel = 8
+
+
+
 const print = (message) => { console.log(message) }
 
 const setSubmitListener = () => {
@@ -43,7 +51,7 @@ const parseUserQuery = (userQuery) => {
   if (queryParts.length == 1) {
     return '?q=' + queryParts[0].trim()
   } else if (queryParts.length == 2) {
-    return `?lat=${queryParts[0].trim()}&lon=${queryParts[1].trim()}`
+    return `?lat=${queryParts[1].trim()}&lon=${queryParts[0].trim()}`
   } else {
     alert('Invalid query, check formatting')
     return false
@@ -67,15 +75,18 @@ async function executeUserQuery() {
   event.preventDefault()
   let userQuery = getUserInput()
 
-  let currentWeatherQuery = apiUrl + 'weather' + userQuery + apiKey
+  let currentWeatherQuery = weatherApiUrl + 'weather' + userQuery + weatherApiKey
   let responseCurrent = await getQueryResponse(currentWeatherQuery)
   print(responseCurrent)
   displayWeather(responseCurrent, 'current-weather')
 
-  let forecastWeatherQuery = apiUrl + 'forecast' + userQuery + apiKey
+  let forecastWeatherQuery = weatherApiUrl + 'forecast' + userQuery + weatherApiKey
   let responseForecast = await getQueryResponse(forecastWeatherQuery)
   print(responseForecast)
   displayWeather(responseForecast, 'weather-forecast')
+
+  let mapQuery = await queryMapBox(responseCurrent, zoomLevel)
+  displayMap(mapQuery)
 }
 
 const displayWeather = (response, currentOrForecast) => {
@@ -132,13 +143,41 @@ const addFavicon = (iconName, textContent) => {
   return `<i class='fa fa-${iconName}'></i> ${textContent}`
 }
 
+async function queryMapBox(weatherResponse, zoomLevel) {
+  let queryLat = weatherResponse.data.coord.lat
+  let queryLon = weatherResponse.data.coord.lon
+  let mapCanvas = document.querySelector('canvas')
+  let mapWidth = mapCanvas.scrollWidth
+  let mapHeight = mapCanvas.scrollHeight
+
+  let queryString = `${mapApiUrl}${queryLon},${queryLat},${zoomLevel}/${mapWidth}x${mapHeight}${mapApiKey}`
+  print(queryString)
+  let mapImg = await getQueryResponse(queryString)
+  // print(mapImg)
+  return queryString
+}
+
+async function displayMap(map) {
+  let mapCanvas2DContext = document.querySelector('canvas').getContext('2d')
+  let mapCanvas = document.querySelector('canvas')
+  let mapWidth = mapCanvas.scrollWidth
+  let mapHeight = mapCanvas.scrollHeight
+  let mapHTMLImg = new Image(mapWidth, mapHeight)
+  mapHTMLImg.src = map
+  print(mapHTMLImg)
+  await mapCanvas2DContext.drawImage(mapHTMLImg, 0, 0)
+  document.querySelector('main').appendChild(mapHTMLImg)
+}
+
 const setSaveListener = () => {
   let saveButton = document.querySelector('#save-query')
   saveButton.addEventListener('click', saveQuery)
 }
 
 const saveQuery = () => {
-  let userQuery = document.querySelector('#city').value
+  let userQuery = document.querySelector('#user-search-query').value
+  let savedName = prompt('Enter location name (work, home, etc.)')
+  print(savedName)
   localStorage.setItem('savedQuery', userQuery)
 }
 
