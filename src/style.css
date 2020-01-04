@@ -6,7 +6,9 @@ body {
 }
 
 canvas {
-  margin: 0 auto;
+  width: 90vw;
+  height: 90vw;
+  max-height: 50vh;
 }
 
 footer {
@@ -15,7 +17,6 @@ footer {
   width: 100%;
   background-color: lightcyan;
   padding-top: 0.25em;
-  padding-bottom: 0.1em;
 }
 
 header {
@@ -30,6 +31,13 @@ header, main, footer {
 
 main {
   align-items: center;
+  flex-flow: column;
+}
+
+p {
+  font-size: 1.3rem;
+  height: 1.3rem;
+  margin: 0.2em;
 }
 
 .fa {
@@ -39,6 +47,7 @@ main {
 .precip {
   display: flex;
   flex-flow: row;
+  justify-content: center;
 }
 
 .spacer {
@@ -53,4 +62,5 @@ main {
 #weather-info {
   display: flex;
   flex-flow: row;
+  bottom: 0;
 }

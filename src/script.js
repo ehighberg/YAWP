@@ -1,8 +1,7 @@
 const apiUrl = "http://api.openweathermap.org/data/2.5/"
 const apiKey = '&appid=' + '3e1f7aa5c8683821e7604c5eb70b0985'
 
-let fieldsToDisplay = ['temp', 'precip']
-// , 'wind', 'clouds', 'humidity']
+let fieldsToDisplay = ['temp', 'precip', 'wind', 'clouds', 'humidity']
 
 const responseMap = {
   'current-weather': {
@@ -16,6 +15,10 @@ const responseMap = {
 
   }
 }
+
+const windDirMap = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N']
+
+const cloudCoverMap = ['Clear', 'Partly cloudy', 'Mostly cloudy', 'Overcast']
 
 const print = (message) => { console.log(message) }
 
@@ -92,16 +95,33 @@ const displayField = (response, name, currentOrForecast) => {
 
 const kelvinToF = (kelvinTemp) => {
   let tempF = Math.floor((kelvinTemp - 273.15) * 1.8 + 32)
-  return addFavicon('thermometer-half', tempF + '°F')
+  let tempC = Math.floor((kelvinTemp - 273.15))
+  return addFavicon('thermometer-half', tempF + '°F / ' + tempC + '°C')
 }
 
 const parsePrecip = (weather) => {
   let precipType = weather.main
   let iconindex = weather.icon
   let iconURL = `https://openweathermap.org/img/wn/${iconindex}.png`
-  let iconStyle = 'max-height:100%;max-width:100%;'
+  let iconStyle = 'height:150%;'
   let iconStr = `<img src=${iconURL} style=${iconStyle}></img>`
-  return `${iconStr}${precipType}`
+  return `${iconStr}<p>&nbsp${precipType}</p>`
+}
+
+const parseWind = (wind) => {
+  let windSpeed = (2.237 * wind.speed).toFixed(2)
+  let windDir = windDirMap[Math.round(wind.deg / 45)]
+  // print(`${windSpeed} ${windDir}`)
+  return addFavicon('superpowers', `${windSpeed} mph ${windDir}`)
+}
+
+const parseClouds = (clouds) => {
+  let cloudiness = cloudCoverMap[Math.max(Math.floor((clouds.all) / 25), 3)]
+  return addFavicon('cloud', cloudiness)
+}
+
+const parseHumidity = (humidity) => {
+  return addFavicon('tint', humidity + '% Humid')
 }
 
 const addFavicon = (iconName, textContent) => {
@@ -160,3 +180,5 @@ const loadSavedQuery = () => {
 setSubmitListener()
 setSaveListener()
 loadSavedQuery()
+
+document.querySelector('#submit-search').click()
