@@ -1,7 +1,7 @@
 const apiUrl = "http://api.openweathermap.org/data/2.5/"
 const apiKey = '&appid=' + '3e1f7aa5c8683821e7604c5eb70b0985'
 
-let fieldsToDisplay = ['temp', 'precip', 'wind', 'clouds', 'humidity']
+const fieldsToDisplay = ['temp', 'precip', 'wind', 'clouds', 'humidity']
 
 const responseMap = {
   'current-weather': {
@@ -12,7 +12,11 @@ const responseMap = {
     'humidity': (response) => { return parseHumidity(response.data.main.humidity) }
   },
   'weather-forecast': {
-
+    'temp': (response) => { return kelvinToF(response.data.list[0].main.temp) },
+    'precip': (response) => { return parsePrecip(response.data.list[0].weather[0]) },
+    'wind': (response) => { return parseWind(response.data.list[0].wind) },
+    'clouds': (response) => { return parseClouds(response.data.list[0].clouds) },
+    'humidity': (response) => { return parseHumidity(response.data.list[0].main.humidity) }
   }
 }
 
@@ -71,7 +75,7 @@ async function executeUserQuery() {
   let forecastWeatherQuery = apiUrl + 'forecast' + userQuery + apiKey
   let responseForecast = await getQueryResponse(forecastWeatherQuery)
   print(responseForecast)
-  // displayWeather(responseForecast, 'weather-forecast')
+  displayWeather(responseForecast, 'weather-forecast')
 }
 
 const displayWeather = (response, currentOrForecast) => {
@@ -112,11 +116,11 @@ const parseWind = (wind) => {
   let windSpeed = (2.237 * wind.speed).toFixed(2)
   let windDir = windDirMap[Math.round(wind.deg / 45)]
   // print(`${windSpeed} ${windDir}`)
-  return addFavicon('superpowers', `${windSpeed} mph ${windDir}`)
+  return addFavicon('superpowers', `${windSpeed}mph ${windDir ? windDir : ''}`)
 }
 
 const parseClouds = (clouds) => {
-  let cloudiness = cloudCoverMap[Math.max(Math.floor((clouds.all) / 25), 3)]
+  let cloudiness = cloudCoverMap[Math.min(Math.floor((clouds.all) / 25), 3)]
   return addFavicon('cloud', cloudiness)
 }
 
@@ -128,37 +132,6 @@ const addFavicon = (iconName, textContent) => {
   return `<i class='fa fa-${iconName}'></i> ${textContent}`
 }
 
-// const displayResponse = (response) => {
-//   let cityName = response.data.name
-//   let currentTemp = kelvinToF(response.data.main.temp)
-//   let weatherDesc = response.data.weather[0].description
-//   let minTemp = kelvinToF(response.data.main.temp_min)
-//   let maxTemp = kelvinToF(response.data.main.temp_max)
-
-//   let sunriseTime = humanReadableTime(response.data.sys.sunrise)
-//   let sunsetTime = humanReadableTime(response.data.sys.sunset)
-//   let humidity = response.data.main.humidity
-//   let pressure = response.data.main.pressure
-//   let windSpeed = response.data.wind.speed
-//   let windDir = response.data.wind.deg
-
-//   document.querySelector('main').innerHTML = ''
-
-//   displayDataField(`Here is the current weather in ${cityName}`, 'city-name')
-//   displayDataField(`It is <span class='temp'>${currentTemp}°F</span> outside`, 'current-temp')
-//   displayDataField(`The sky there is ${weatherDesc}`, 'weather-desc')
-//   displayDataField(`Low of <span class='temp'>${minTemp}°F</span> today`, 'min-temp')
-//   displayDataField(`High of <span class='temp'>${maxTemp}°F</span> today`, 'max-temp')
-
-//   displayDataField(`Sunrise at ${sunriseTime}`, 'sunrise-time')
-//   displayDataField(`Sunset at ${sunsetTime}`, 'sunset-time')
-//   displayDataField(`Humidity at ${humidity}%`, 'humidity')
-//   displayDataField(`Atmospheric pressure at ${pressure} millibars`, 'pressure')
-//   displayDataField(`Wind speed at ${windSpeed} m/s towards ${windDir}°`, 'wind')
-
-//   colorTempFields()
-// }
-
 const setSaveListener = () => {
   let saveButton = document.querySelector('#save-query')
   saveButton.addEventListener('click', saveQuery)
@@ -169,16 +142,9 @@ const saveQuery = () => {
   localStorage.setItem('savedQuery', userQuery)
 }
 
-const loadSavedQuery = () => {
-  let savedQuery = localStorage.getItem('savedQuery')
-  if (savedQuery) {
-    let userField = document.querySelector('#city')
-    userField.value = savedQuery
-  }
-}
 
 setSubmitListener()
 setSaveListener()
-loadSavedQuery()
 
+// REMOVE WHEN DONE DEVELOPING
 document.querySelector('#submit-search').click()

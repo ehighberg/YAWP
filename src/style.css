@@ -63,4 +63,5 @@ p {
   display: flex;
   flex-flow: row;
   bottom: 0;
+  justify-content: space-between;
 }
