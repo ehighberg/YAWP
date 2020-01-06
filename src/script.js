@@ -80,7 +80,6 @@ async function executeUserQuery() {
   console.log(responseCurrent)
   displayWeather(responseCurrent, 'current-weather')
   lastResponse = await responseCurrent
-  console.log(lastResponse)
 
   let forecastWeatherQuery = weatherApiUrl + 'forecast' + userQuery + weatherApiKey
   let responseForecast = await getQueryResponse(forecastWeatherQuery)
@@ -229,15 +228,14 @@ const getPixelCoords = (xPixel, yPixel) => {
   let width = map.width
   let height = map.height
 
-
   let centerLat = lastResponse.data.coord.lat
   let centerLon = lastResponse.data.coord.lon
 
-  let degreesPerXPixel = 360 / 2 ** (zoomLevel + 8)
-  let degreesPerYPixel = 360 / 2 ** (zoomLevel + 8) * Math.cos(centerLat * Math.PI / 180)
+  let degreesPerXPixel = 360 / 2 ** (zoomLevel + 9)
+  let degreesPerYPixel = 360 / 2 ** (zoomLevel + 9) * Math.cos(centerLat * Math.PI / 180)
 
-  let pixelLat = centerLat - degreesPerYPixel * (yPixel - height / 2)
-  let pixelLon = centerLon + degreesPerXPixel * (xPixel - width / 2)
+  let pixelLat = Number((centerLat - degreesPerYPixel * (yPixel - height / 2)).toFixed(2))
+  let pixelLon = Number((centerLon + degreesPerXPixel * (xPixel - width / 2)).toFixed(2))
 
   return {
     lat: pixelLat,
@@ -245,14 +243,74 @@ const getPixelCoords = (xPixel, yPixel) => {
   }
 }
 
+const getCoordPixel = (lat, lon) => {
+  let map = document.querySelector('canvas')
+  let width = map.width
+  let height = map.height
+
+  let centerLat = lastResponse.data.coord.lat
+  let centerLon = lastResponse.data.coord.lon
+
+  let degreesPerXPixel = 360 / 2 ** (zoomLevel + 8)
+  let degreesPerYPixel = 360 / 2 ** (zoomLevel + 8) * Math.cos(centerLat * Math.PI / 180)
+
+  let yPixel = (lat - centerLat) / degreesPerYPixel + (height / 2)
+  let xPixel = (lon - centerLon) / degreesPerXPixel + (width / 2)
+
+  return {
+    x: xPixel,
+    y: yPixel
+  }
+}
+
+
+async function getPointsNearLoc() {
+  let map = document.querySelector('canvas')
+  let width = map.width
+  let height = map.height
+
+  let xSteps = Math.floor(width / 6)
+  let ySteps = Math.floor(height / 6)
+
+  let queryGrid = []
+  for (i = 0; i < 7; i++) {
+    for (j = 0; j < 7; j++) {
+      let queryLat = getPixelCoords(0, i * xSteps)['lat']
+      let queryLon = getPixelCoords(j * ySteps, 0)['lon']
+      let latLonQuery = `?lat=${queryLat}&lon=${queryLon}`
+      // console.log(latLonQuery)
+      let queryUrl = `${weatherApiUrl}weather${latLonQuery}${weatherApiKey}`
+      let gridResponse = await getQueryResponse(queryUrl)
+      queryGrid.push(gridResponse)
+    }
+  }
+  console.log(queryGrid)
+  return queryGrid
+}
 
 
 setSubmitListener()
 setSaveListener()
 populateLoadOptions()
 setLoadListener()
-
+console.log('listeners set')
 
 // REMOVE WHEN DONE DEVELOPING OR REPLACE WITH LOCATION DETECTION
 document.querySelector('#submit-search').click()
-setTimeout(function () { console.log(getPixelCoords(324, 0)) }, 500)
+setTimeout(function () {
+  console.log(getPixelCoords(0, 0))
+  console.log(getPixelCoords(324, 0))
+  console.log(getPixelCoords(0, 324))
+  console.log(getPixelCoords(324, 324))
+}, 250)
+
+let savedGridPoints
+if (localStorage.getItem('savedGridPoints')) {
+  savedGridPoints = localStorage.getItem('savedGridPoints')
+} else {
+  setTimeout(async function () {
+    savedGridPoints = await getPointsNearLoc()
+    localStorage.setItem('savedGridPoints', savedGridPoints)
+  }, 250)
+}
+
