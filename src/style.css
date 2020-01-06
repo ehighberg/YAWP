@@ -11,6 +11,7 @@ canvas {
   width: 90vw;
   height: 90vw;
   max-height: 50vh;
+  margin-top: 2vh;
 }
 
 footer {
@@ -72,8 +73,12 @@ p {
 
   body {
     margin-top: 2vh;
-    flex-flow: row;
+    flex-flow: row wrap;
     justify-content: space-around;
+  }
+
+  header {
+    height: 5em;
   }
 
   canvas {
@@ -87,6 +92,10 @@ p {
   }
 }
 
-@media (min-width: 801px) {
-
+@media (min-width: 1025px) {
+  #not-map {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-around;
+  }
 }

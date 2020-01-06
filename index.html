@@ -14,37 +14,40 @@
 </head>
 
 <body>
-  <header>
-    <form id='search-form'>
-      <input id='user-search-query' type='text' name='user-search-query' placeholder='City / Zip / Lat, Long' size='17'
-        autofocus>
-      <input type='submit' value='Search' id='submit-search'>
-    </form>
 
-    <form id='save-load-filter'>
-      <input type='button' value='Save' id='save-query'>
+  <div id='not-map'>
+    <header>
+      <form id='search-form'>
+        <input id='user-search-query' type='text' name='user-search-query' placeholder='City / Zip / Lat, Long'
+          size='17' autofocus>
+        <input type='submit' value='Search' id='submit-search'>
+      </form>
 
-      <select id='load-query' name='load-query'>
-        <!-- <option value='load'>TBD: Load</option>
+      <form id='save-load-filter'>
+        <input type='button' value='Save' id='save-query'>
+
+        <select id='load-query' name='load-query'>
+          <!-- <option value='load'>TBD: Load</option>
         <option value='placeholder'>spam</option> -->
-      </select>
+        </select>
 
-      <select id='map-overlay' name='map-overlay'>
-        <option value='current-temp'>TBD: Overlay</option>
-        <option value='precip'>Radar</option>
-      </select>
-    </form>
-  </header>
+        <select id='map-overlay' name='map-overlay'>
+          <option value='current-temp'>TBD: Overlay</option>
+          <option value='precip'>Radar</option>
+        </select>
+      </form>
+    </header>
 
+
+    <aside id='weather-info'>
+      <div id='current-weather'></div>
+      <div id='weather-forecast'></div>
+    </aside>
+</div>
 
   <main>
     <canvas id='canvas'></canvas>
   </main>
-
-  <aside id='weather-info'>
-    <div id='current-weather'></div>
-    <div id='weather-forecast'></div>
-  </aside>
 
 
   <footer>
