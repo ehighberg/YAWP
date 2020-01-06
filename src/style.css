@@ -69,9 +69,9 @@ p {
 }
 
 @media (min-width: 560px) {
-  
+
   body {
-    padding-top: 2vh;
+    margin-top: 2vh;
     flex-flow: row;
     justify-content: space-around;
   }
@@ -85,4 +85,8 @@ p {
   main {
     order: -5;
   }
+}
+
+@media (min-width: 801px) {
+
 }

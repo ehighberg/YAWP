@@ -181,13 +181,36 @@ const setSaveListener = () => {
 const saveQuery = () => {
   let userQuery = document.querySelector('#user-search-query').value
   let savedName = prompt('Enter location name (work, home, etc.)')
-  print(savedName)
-  localStorage.setItem('savedQuery', userQuery)
+
+  if (localStorage.getItem('Save a search') == 'Save a search') {
+    localStorage.removeItem('Save a search')
+  }
+
+  localStorage.setItem(savedName, userQuery)
+}
+
+const populateLoadOptions = () => {
+  let loadDropDown = document.querySelector('#load-query')
+  let savedQueryNames = Object.keys(localStorage)
+  print(savedQueryNames)
+
+  if (savedQueryNames.length == 0) {
+    localStorage.setItem('Save a search', 'Save a search')
+    savedQueryNames = Object.keys(localStorage)
+  }
+
+  savedQueryNames.forEach((queryName) => {
+    let newOption = document.createElement('option')
+    newOption.value = queryName
+    newOption.innerHTML = queryName
+    loadDropDown.appendChild(newOption)
+  })
 }
 
 
 setSubmitListener()
 setSaveListener()
+populateLoadOptions()
 
 // REMOVE WHEN DONE DEVELOPING
 document.querySelector('#submit-search').click()

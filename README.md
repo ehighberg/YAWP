@@ -51,36 +51,7 @@ YAWP is a simple weather service querying app, with native generation and render
 | Render temperature gradient | H | 4hrs | | |
 | Other climate gradients | M | 1hr | | |
 | Pressure fronts | L | 3hrs | | |
-| Get forecasts from API | H | 2hrs | 0.5hrs | |
-| User filtered data | M | 1.5hrs | | |
-| Get user location from browser | M | 2hrs | | |
-| Animated wind / fronts | L | 4hrs | |
-
-
-## Priority Matrix
-
-![the matrix](https://res.cloudinary.com/ehighberg/image/upload/v1578063616/priority_matrix_p8qxye.png "priorities")
-
-
-## API Data Sample
-
-
-![weather query](https://res.cloudinary.com/ehighberg/image/upload/v1578063616/weather_query_wmgffh.png "weather query")
-
-
-![background map](https://res.cloudinary.com/ehighberg/image/upload/v1578063616/base_map_wgqmgm.png "background map")
-
-
-
-## Code Snippet
-
-Use this section to include a brief code snippet of functionality that you are proud of an a brief description  
-
-```
-function reverse(string) {
-	// here is the code to reverse a string of text
-}
-```
+| Get forecasts from API | H | 2hrs 
 
 ## Change Log
 
