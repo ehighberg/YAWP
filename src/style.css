@@ -3,6 +3,8 @@ body {
   width: 100%;
   font-family: 'Merriweather', serif;
   background-color: #baf7f7;
+  display: flex;
+  flex-flow: column;
 }
 
 canvas {
@@ -63,5 +65,24 @@ p {
   display: flex;
   flex-flow: row;
   bottom: 0;
-  justify-content: space-between;
+  justify-content: space-around;
+}
+
+@media (min-width: 560px) {
+  
+  body {
+    padding-top: 2vh;
+    flex-flow: row;
+    justify-content: space-around;
+  }
+
+  canvas {
+    max-height: inherit;
+    max-width: 50vw;
+    max-height: 90vh;
+  }
+
+  main {
+    order: -5;
+  }
 }

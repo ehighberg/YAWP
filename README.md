@@ -33,7 +33,7 @@ YAWP is a simple weather service querying app, with native generation and render
 |Jan 2rd| Project Prompt / Priority Matrix | Complete
 |Jan 3rd| Wireframes / File Organization | Complete
 |Jan 5th| Main Page (searchbar, current weather) | Complete
-|Jan 6th| Map View (pins at search location and ~12 more in box) | Incomplete
+|Jan 6th| Map View | Complete
 |Jan 7th| MVP (Rendered climate map, saved favorites) | Incomplete
 |Jan 8th| Forecasts / Info Filtering | Incomplete
 |Jan 9th| Present | Incomplete
@@ -45,9 +45,8 @@ YAWP is a simple weather service querying app, with native generation and render
 | HTML structure | H | 2hrs | 1.75hrs | 1.5hrs |
 | Basic styling | H | 3hrs | 1hrs | |
 | Display searched weather | H | 3hrs | 3.5hrs | |
-| Map searched location | H | 3hrs | 4hrs | |
-| Responsive CSS / map size | H | 2hrs | | |
-| Clickable pins nearby | M | 2hrs | | |
+| Map searched location | H | 3hrs | 5hrs | |
+| Responsive CSS / map size | H | 2hrs | 0.5hrs| |
 | Saving favorite searches | M | 1.5hrs | | |
 | Render temperature gradient | H | 4hrs | | |
 | Other climate gradients | M | 1hr | | |
@@ -55,7 +54,6 @@ YAWP is a simple weather service querying app, with native generation and render
 | Get forecasts from API | H | 2hrs | 0.5hrs | |
 | User filtered data | M | 1.5hrs | | |
 | Get user location from browser | M | 2hrs | | |
-| Put some data at each pin | L | 3hrs | | |
 | Animated wind / fronts | L | 4hrs | |
 
 
@@ -86,6 +84,9 @@ function reverse(string) {
 
 ## Change Log
 
-### [0.0.1] - 2020-01-03
+### [0.1] - 2020-01-03
 - Added mobile wireframe
 - Moved user location detection to post-MVP
+
+### [0.2] - 2020-01-06
+- Removed clickable markers from project
