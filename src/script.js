@@ -124,10 +124,10 @@ const parsePrecip = (weather) => {
 }
 
 const parseWind = (wind) => {
-  let windSpeed = (2.237 * wind.speed).toFixed(2)
+  let windSpeed = (2.237 * wind.speed).toFixed(0)
   let windDir = windDirMap[Math.round(wind.deg / 45)]
   // print(`${windSpeed} ${windDir}`)
-  return addFavicon('superpowers', `${windSpeed}mph ${windDir ? windDir : ''}`)
+  return addFavicon('superpowers', `${windSpeed} mph ${windDir ? windDir : ''}`)
 }
 
 const parseClouds = (clouds) => {
@@ -207,10 +207,26 @@ const populateLoadOptions = () => {
   })
 }
 
+const setLoadListener = () => {
+  let loadDropDown = document.querySelector('#load-query')
+  loadDropDown.addEventListener('click', loadOption)
+}
+
+const loadOption = () => {
+  let selectedOption = document.querySelector('#load-query').value
+  print(selectedOption)
+  let selectedLocation = localStorage.getItem(selectedOption)
+  let userSearchBar = document.querySelector('#user-search-query')
+  userSearchBar.value = selectedLocation
+  executeUserQuery()
+}
+
 
 setSubmitListener()
 setSaveListener()
 populateLoadOptions()
+setLoadListener()
 
-// REMOVE WHEN DONE DEVELOPING
+
+// REMOVE WHEN DONE DEVELOPING OR REPLACE WITH LOCATION DETECTION
 document.querySelector('#submit-search').click()

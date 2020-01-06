@@ -23,8 +23,8 @@ footer {
 }
 
 header {
-  padding-top: 0.2em;
-  padding-bottom: 0.2em;
+  padding-top: 2vh;
+  padding-bottom: 2vh;
   flex-flow: column;
 }
 
