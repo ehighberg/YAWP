@@ -29,7 +29,7 @@ const mapApiUrl = 'https://api.mapbox.com/styles/v1/mapbox/light-v10/static/'
 const mapApiKey = '?access_token=pk.eyJ1IjoiZWhpZ2hiZXJnIiwiYSI6ImNrNHgycGxmNjB1dTQzbG9wdmloOGRtN3UifQ.13kapeks0t3GQOmTUv6fQg'
 
 let zoomLevel = 8
-
+let lastResponse
 
 
 const print = (message) => { console.log(message) }
@@ -77,8 +77,10 @@ async function executeUserQuery() {
 
   let currentWeatherQuery = weatherApiUrl + 'weather' + userQuery + weatherApiKey
   let responseCurrent = await getQueryResponse(currentWeatherQuery)
-  print(responseCurrent)
+  console.log(responseCurrent)
   displayWeather(responseCurrent, 'current-weather')
+  lastResponse = await responseCurrent
+  console.log(lastResponse)
 
   let forecastWeatherQuery = weatherApiUrl + 'forecast' + userQuery + weatherApiKey
   let responseForecast = await getQueryResponse(forecastWeatherQuery)
@@ -221,6 +223,29 @@ const loadOption = () => {
   executeUserQuery()
 }
 
+const getPixelCoords = (xPixel, yPixel) => {
+  // Largely from https://stackoverflow.com/questions/47106276/converting-pixels-to-latlng-coordinates-from-google-static-image
+  let map = document.querySelector('canvas')
+  let width = map.width
+  let height = map.height
+
+
+  let centerLat = lastResponse.data.coord.lat
+  let centerLon = lastResponse.data.coord.lon
+
+  let degreesPerXPixel = 360 / 2 ** (zoomLevel + 8)
+  let degreesPerYPixel = 360 / 2 ** (zoomLevel + 8) * Math.cos(centerLat * Math.PI / 180)
+
+  let pixelLat = centerLat - degreesPerYPixel * (yPixel - height / 2)
+  let pixelLon = centerLon + degreesPerXPixel * (xPixel - width / 2)
+
+  return {
+    lat: pixelLat,
+    lon: pixelLon
+  }
+}
+
+
 
 setSubmitListener()
 setSaveListener()
@@ -230,3 +255,4 @@ setLoadListener()
 
 // REMOVE WHEN DONE DEVELOPING OR REPLACE WITH LOCATION DETECTION
 document.querySelector('#submit-search').click()
+setTimeout(function () { console.log(getPixelCoords(324, 0)) }, 500)
