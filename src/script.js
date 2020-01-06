@@ -152,21 +152,25 @@ async function queryMapBox(weatherResponse, zoomLevel) {
 
   let queryString = `${mapApiUrl}${queryLon},${queryLat},${zoomLevel}/${mapWidth}x${mapHeight}${mapApiKey}`
   print(queryString)
-  let mapImg = await getQueryResponse(queryString)
-  // print(mapImg)
-  return queryString
+  let mapImg = new Image(mapWidth, mapHeight)
+  mapImg.src = queryString
+  return mapImg
 }
 
-async function displayMap(map) {
+function displayMap(map) {
   let mapCanvas2DContext = document.querySelector('canvas').getContext('2d')
-  let mapCanvas = document.querySelector('canvas')
-  let mapWidth = mapCanvas.scrollWidth
-  let mapHeight = mapCanvas.scrollHeight
-  let mapHTMLImg = new Image(mapWidth, mapHeight)
-  mapHTMLImg.src = map
-  print(mapHTMLImg)
-  await mapCanvas2DContext.drawImage(mapHTMLImg, 0, 0)
-  document.querySelector('main').appendChild(mapHTMLImg)
+  setCanvasDims()
+  map.onload = () => {
+    mapCanvas2DContext.drawImage(map, 0, 0)
+  }
+}
+
+const setCanvasDims = () => {
+  let canvas = document.querySelector('canvas')
+  let mapWidth = canvas.scrollWidth
+  let mapHeight = canvas.scrollHeight
+  canvas.height = mapHeight
+  canvas.width = mapWidth
 }
 
 const setSaveListener = () => {
