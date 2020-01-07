@@ -28,13 +28,15 @@ const windDirMap = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N']
 
 const cloudCoverMap = ['Clear', 'Partly cloudy', 'Mostly cloudy', 'Overcast']
 
-const mapApiUrl = 'https://api.mapbox.com/styles/v1/mapbox/light-v10/static/'
+const mapApiUrl = 'https://api.mapbox.com/styles/v1/mapbox/dark-v10/static/'
 
 const mapApiKey = '?access_token=pk.eyJ1IjoiZWhpZ2hiZXJnIiwiYSI6ImNrNHgycGxmNjB1dTQzbG9wdmloOGRtN3UifQ.13kapeks0t3GQOmTUv6fQg'
 
-const viridisRGB = chroma.scale(chroma.brewer.viridis).colors(256)
+let viridis = chroma.scale(chroma.brewer.viridis).colors(256)
+let viridisRGB = viridis.map(hexColor => {return hexColor + '88'})
 
 let zoomLevel = 8
+let samplesPerXY = 7
 let rectSize = 9
 let lastResponse
 
@@ -94,7 +96,7 @@ async function executeUserQuery() {
   displayWeather(responseForecast, 'weather-forecast')
 
   let mapQuery = await queryMapBox(responseCurrent, zoomLevel)
-  displayMap(mapQuery)
+  displayMap(mapQuery, 1.0)
 }
 
 const displayWeather = (response, currentOrForecast) => {
@@ -165,12 +167,16 @@ async function queryMapBox(weatherResponse, zoomLevel) {
   return mapImg
 }
 
-function displayMap(map) {
+function displayMap(map, opacity) {
   let mapCanvas2DContext = document.querySelector('canvas').getContext('2d')
   setCanvasDims()
   map.onload = () => {
+    mapCanvas2DContext.save()
+    mapCanvas2DContext.globalAlpha = opacity
     mapCanvas2DContext.drawImage(map, 0, 0)
+    mapCanvas2DContext.restore()
   }
+  
 }
 
 const setCanvasDims = () => {
@@ -276,12 +282,12 @@ async function getPointsNearLoc() {
   let width = map.width
   let height = map.height
 
-  let xSteps = Math.floor(width / 6)
-  let ySteps = Math.floor(height / 6)
+  let xSteps = Math.ceil(width / (samplesPerXY -1))
+  let ySteps = Math.ceil(height / (samplesPerXY - 1))
 
   let queryGrid = []
-  for (i = 0; i < 7; i++) {
-    for (j = 0; j < 7; j++) {
+  for (i = 0; i < samplesPerXY; i++) {
+    for (j = 0; j < samplesPerXY; j++) {
       let queryLat = getPixelCoords(0, i * xSteps)['lat']
       let queryLon = getPixelCoords(j * ySteps, 0)['lon']
       let latLonQuery = `?lat=${queryLat}&lon=${queryLon}`
@@ -340,6 +346,79 @@ const plotPointRGBs = (points, pointRGBs) => {
   }
 }
 
+async function interpolateRGBs (gridPoints, gridValRange, colormap) {
+  gridPoints.sort((a, b) => {return a.xPixel - b.xPixel})
+  let initialGap = gridPoints[samplesPerXY].xPixel - (rectSize - 1)
+  let totalGap = initialGap
+  let numSquares = 1
+  let numInterpolations = 0
+  console.log('initial gap' + initialGap)
+
+  while (totalGap > 0) {
+    totalGap -= rectSize * numSquares
+    numSquares *= 2
+    numInterpolations++
+  }
+
+  console.log(`doing ${numInterpolations} iterations`)
+  for (k = 0; k < numInterpolations + 1; k++) {
+    console.log(`iteration ${k}`)
+    let distinctXVals = distinctXYVals(gridPoints, 'x')
+    console.log(distinctXVals)
+    let distinctYVals = distinctXYVals(gridPoints, 'y')
+    console.log(distinctYVals)
+    if (k <= numInterpolations) {
+      interpolatePoints(gridPoints, distinctXVals, 'x')
+    }
+    if (k <= numInterpolations - 1) {
+      interpolatePoints(gridPoints, distinctYVals, 'y')
+    }
+  }
+  let allRGBs = getPointRGBs(gridPoints, gridValRange, colormap)
+  plotPointRGBs(gridPoints, allRGBs)
+}
+
+const distinctXYVals = (gridPoints, xORy) => {
+  // console.log(gridPoints)
+  let pixelVals = []
+  gridPoints.forEach((point) => {
+    // console.log(point[`${xORy}Pixel`])
+    pixelVals.push(point[`${xORy}Pixel`])
+  })
+  // console.log(pixelVals)
+  let uniqueVals = [...new Set(pixelVals)]
+  return uniqueVals
+}
+
+const interpolatePoints = (points, distinctVals, xORy) => {
+  let otherOfXOrY = (xORy == 'x') ? 'y' : 'x'
+  let newPoints = []
+  distinctVals.forEach((value) => {
+    let oldPointsInLine = points.filter((point) => 
+      point[`${xORy}Pixel`] == value
+    )
+
+    oldPointsInLine.sort((a, b) => {
+      return a[`${otherOfXOrY}Pixel`] - b[`${otherOfXOrY}Pixel`]
+    })
+
+    console.log('numOldPoints ' + oldPointsInLine.length)
+    oldPointsInLine.forEach((point, index) => {
+      if (index > 0) {
+        let newPoint = {
+          val: Number(((point['val'] + oldPointsInLine[index - 1]['val']) / 2).toFixed(2))
+        }
+        newPoint[`${xORy}Pixel`] = value
+        newPoint[`${otherOfXOrY}Pixel`] = Number(((point[`${otherOfXOrY}Pixel`] + oldPointsInLine[index - 1][`${otherOfXOrY}Pixel`]) / 2).toFixed(0))
+        newPoints.push(newPoint)
+      }
+    })
+  })
+  console.log('numNewPoints ' + newPoints.length)
+  newPoints.forEach(point => {points.push(point)})
+}
+
+
 setSubmitListener()
 setSaveListener()
 populateLoadOptions()
@@ -367,10 +446,7 @@ setTimeout(function () {
   }
 
   console.log(savedGridPoints)
-  savedGridPoints.forEach((point) => {
-    console.log(point.data.name)
-    console.log(point.data.coord)
-  })
+
   let gridPointVals = getGridPointVals(savedGridPoints, 'temp')
   console.log(gridPointVals)
   let gridValRange = getGridValRange(gridPointVals)
@@ -378,5 +454,6 @@ setTimeout(function () {
   let gridRGBs = getPointRGBs(gridPointVals, gridValRange, viridisRGB)
   console.log(gridRGBs)
   plotPointRGBs(gridPointVals, gridRGBs)
+  interpolateRGBs(gridPointVals, gridValRange, viridisRGB)
 
 }, 500)
