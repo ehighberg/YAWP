@@ -68,6 +68,7 @@ p {
   flex-flow: row;
   bottom: 0;
   justify-content: space-around;
+  padding-top: 0.5em;
 }
 
 #weather-info > * > * {

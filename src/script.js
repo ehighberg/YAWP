@@ -33,11 +33,12 @@ const mapApiUrl = 'https://api.mapbox.com/styles/v1/mapbox/dark-v10/static/'
 const mapApiKey = '?access_token=pk.eyJ1IjoiZWhpZ2hiZXJnIiwiYSI6ImNrNHgycGxmNjB1dTQzbG9wdmloOGRtN3UifQ.13kapeks0t3GQOmTUv6fQg'
 
 let viridis = chroma.scale(chroma.brewer.viridis).colors(256)
-let viridisRGB = viridis.map(hexColor => {return hexColor + '88'})
+let viridisRGB = viridis.map(hexColor => {return hexColor + '09'})
 
 let zoomLevel = 8
 let samplesPerXY = 7
 let rectSize = 9
+let extraIterations = 2
 let lastResponse
 
 
@@ -297,7 +298,7 @@ async function getPointsNearLoc() {
       queryGrid.push(gridResponse)
     }
   }
-  console.log(queryGrid)
+  // console.log(queryGrid)
   return queryGrid
 }
 
@@ -316,6 +317,7 @@ const getGridPointVals = (gridPoints, paramToPlot) => {
 }
 
 const getGridValRange = (points) => {
+  console.log('getting gridValRange')
   return {
     low: points[0].val,
     high: points[points.length - 1].val
@@ -351,8 +353,8 @@ async function interpolateRGBs (gridPoints, gridValRange, colormap) {
   let initialGap = gridPoints[samplesPerXY].xPixel - (rectSize - 1)
   let totalGap = initialGap
   let numSquares = 1
-  let numInterpolations = 0
-  console.log('initial gap' + initialGap)
+  let numInterpolations = extraIterations
+  console.log('initial gap ' + initialGap + ' pixels')
 
   while (totalGap > 0) {
     totalGap -= rectSize * numSquares
@@ -360,13 +362,13 @@ async function interpolateRGBs (gridPoints, gridValRange, colormap) {
     numInterpolations++
   }
 
-  console.log(`doing ${numInterpolations} iterations`)
-  for (k = 0; k < numInterpolations + 1; k++) {
+  console.log(`doing ${numInterpolations + 1} iterations`)
+  for (k = 0; k <= numInterpolations; k++) {
     console.log(`iteration ${k}`)
     let distinctXVals = distinctXYVals(gridPoints, 'x')
-    console.log(distinctXVals)
+    // console.log(distinctXVals)
     let distinctYVals = distinctXYVals(gridPoints, 'y')
-    console.log(distinctYVals)
+    // console.log(distinctYVals)
     if (k <= numInterpolations) {
       interpolatePoints(gridPoints, distinctXVals, 'x')
     }
@@ -402,7 +404,7 @@ const interpolatePoints = (points, distinctVals, xORy) => {
       return a[`${otherOfXOrY}Pixel`] - b[`${otherOfXOrY}Pixel`]
     })
 
-    console.log('numOldPoints ' + oldPointsInLine.length)
+    // console.log('numOldPoints ' + oldPointsInLine.length)
     oldPointsInLine.forEach((point, index) => {
       if (index > 0) {
         let newPoint = {
@@ -414,8 +416,19 @@ const interpolatePoints = (points, distinctVals, xORy) => {
       }
     })
   })
-  console.log('numNewPoints ' + newPoints.length)
+  // console.log('numNewPoints ' + newPoints.length)
   newPoints.forEach(point => {points.push(point)})
+}
+
+async function plotHeatMap(elementOfWeather) {
+  let gridPoints = await getPointsNearLoc()
+  let gridPointVals
+  console.log(gridPoints)
+  gridPointVals = getGridPointVals(gridPoints, elementOfWeather)
+  console.log(gridPointVals)
+  let gridValRange = getGridValRange(gridPointVals)
+  console.log(gridValRange)
+  interpolateRGBs(gridPointVals, gridValRange, viridisRGB)
 }
 
 
@@ -429,31 +442,7 @@ console.log('listeners set')
 document.querySelector('#submit-search').click()
 
 setTimeout(function () {
-  console.log(getPixelCoords(0, 0))
-  console.log(getPixelCoords(324, 0))
-  console.log(getPixelCoords(0, 324))
-  console.log(getPixelCoords(324, 324))
 
-
-  var savedGridPoints
-  if (localStorage.getItem('savedGridPoints')) {
-    savedGridPoints = JSON.parse(localStorage.getItem('savedGridPoints'))
-  } else {
-    setTimeout(async function () {
-      savedGridPoints = await getPointsNearLoc()
-      localStorage.setItem('savedGridPoints', JSON.stringify(savedGridPoints))
-    }, 250)
-  }
-
-  console.log(savedGridPoints)
-
-  let gridPointVals = getGridPointVals(savedGridPoints, 'temp')
-  console.log(gridPointVals)
-  let gridValRange = getGridValRange(gridPointVals)
-  console.log(gridValRange)
-  let gridRGBs = getPointRGBs(gridPointVals, gridValRange, viridisRGB)
-  console.log(gridRGBs)
-  plotPointRGBs(gridPointVals, gridRGBs)
-  interpolateRGBs(gridPointVals, gridValRange, viridisRGB)
+  plotHeatMap('temp')
 
 }, 500)
