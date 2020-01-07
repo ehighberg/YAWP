@@ -288,6 +288,18 @@ async function getPointsNearLoc() {
   return queryGrid
 }
 
+const getGridPointColors = (gridPoints, paramToPlot) => {
+  let pointVals = []
+  gridPoints.forEach(gridPoint => {
+    let pointStats = {
+      val: responseMap["current-weather"][paramToPlot](gridPoint),
+      lat: gridPoint.data.coord.lat,
+      lon: gridPoint.data.coord.lon
+    }
+    pointVals.append(pointStats)
+    pointVals.sort((a, b) => {a.val - b.val})
+  })
+}
 
 setSubmitListener()
 setSaveListener()
@@ -306,11 +318,11 @@ setTimeout(function () {
 
 let savedGridPoints
 if (localStorage.getItem('savedGridPoints')) {
-  savedGridPoints = localStorage.getItem('savedGridPoints')
+  savedGridPoints = JSON.parse(localStorage.getItem('savedGridPoints'))
 } else {
   setTimeout(async function () {
     savedGridPoints = await getPointsNearLoc()
-    localStorage.setItem('savedGridPoints', savedGridPoints)
+    localStorage.setItem('savedGridPoints', JSON.stringify(savedGridPoints))
   }, 250)
 }
 
