@@ -20,6 +20,10 @@ const responseMap = {
   }
 }
 
+const elementsOfWeather = {
+  'temp': (point) => { return (point.data.main.temp - 273.15) * 1.8 + 32 }
+  }
+
 const windDirMap = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N']
 
 const cloudCoverMap = ['Clear', 'Partly cloudy', 'Mostly cloudy', 'Overcast']
@@ -28,7 +32,10 @@ const mapApiUrl = 'https://api.mapbox.com/styles/v1/mapbox/light-v10/static/'
 
 const mapApiKey = '?access_token=pk.eyJ1IjoiZWhpZ2hiZXJnIiwiYSI6ImNrNHgycGxmNjB1dTQzbG9wdmloOGRtN3UifQ.13kapeks0t3GQOmTUv6fQg'
 
+const viridisRGB = chroma.scale(chroma.brewer.viridis).colors(256)
+
 let zoomLevel = 8
+let rectSize = 9
 let lastResponse
 
 
@@ -231,7 +238,7 @@ const getPixelCoords = (xPixel, yPixel) => {
   let centerLat = lastResponse.data.coord.lat
   let centerLon = lastResponse.data.coord.lon
 
-  let degreesPerXPixel = 360 / 2 ** (zoomLevel + 9)
+  let degreesPerXPixel = 360 / 2 ** (zoomLevel + 9) * Math.cos(centerLat * Math.PI / 180)
   let degreesPerYPixel = 360 / 2 ** (zoomLevel + 9) * Math.cos(centerLat * Math.PI / 180)
 
   let pixelLat = Number((centerLat - degreesPerYPixel * (yPixel - height / 2)).toFixed(2))
@@ -251,11 +258,11 @@ const getCoordPixel = (lat, lon) => {
   let centerLat = lastResponse.data.coord.lat
   let centerLon = lastResponse.data.coord.lon
 
-  let degreesPerXPixel = 360 / 2 ** (zoomLevel + 8)
-  let degreesPerYPixel = 360 / 2 ** (zoomLevel + 8) * Math.cos(centerLat * Math.PI / 180)
+  let degreesPerXPixel = 360 / 2 ** (zoomLevel + 9) * Math.cos(centerLat * Math.PI / 180)
+  let degreesPerYPixel = 360 / 2 ** (zoomLevel + 9) * Math.cos(centerLat * Math.PI / 180)
 
-  let yPixel = (lat - centerLat) / degreesPerYPixel + (height / 2)
-  let xPixel = (lon - centerLon) / degreesPerXPixel + (width / 2)
+  let yPixel = Number(((lat - centerLat) / degreesPerYPixel + (height / 2)).toFixed(0))
+  let xPixel = Number(((lon - centerLon) / degreesPerXPixel + (width / 2)).toFixed(0))
 
   return {
     x: xPixel,
@@ -288,17 +295,49 @@ async function getPointsNearLoc() {
   return queryGrid
 }
 
-const getGridPointColors = (gridPoints, paramToPlot) => {
+const getGridPointVals = (gridPoints, paramToPlot) => {
   let pointVals = []
   gridPoints.forEach(gridPoint => {
     let pointStats = {
-      val: responseMap["current-weather"][paramToPlot](gridPoint),
-      lat: gridPoint.data.coord.lat,
-      lon: gridPoint.data.coord.lon
+      val: Number(elementsOfWeather[paramToPlot](gridPoint).toFixed(2)),
+      xPixel: getCoordPixel(0, gridPoint.data.coord.lon)['x'],
+      yPixel: getCoordPixel(gridPoint.data.coord.lat, 0)['y']
     }
-    pointVals.append(pointStats)
-    pointVals.sort((a, b) => {a.val - b.val})
+    pointVals.push(pointStats)    
   })
+  pointVals.sort((a, b) => {return a.val - b.val})
+  return pointVals
+}
+
+const getGridValRange = (points) => {
+  return {
+    low: points[0].val,
+    high: points[points.length - 1].val
+  }
+}
+
+const getPointRGBs = (points, gridValRange, colormap) => {
+  let low = gridValRange.low
+  let high = gridValRange.high
+
+  let valueMap = colormap.length / (high - low)
+  let rgbs = points.map((point) => {
+    // console.log((point.val - low) * valueMap)
+    return colormap[Math.min(Math.floor((point.val - low) * valueMap), 255)]
+  })
+  return rgbs
+}
+
+const plotPointRGBs = (points, pointRGBs) => {
+  let ctx = document.querySelector('canvas').getContext('2d')
+  for (i = 0; i < points.length; i++) {
+    ctx.beginPath()
+    ctx.fillStyle = pointRGBs[i]
+    ctx.rect(points[i]['xPixel'] - (rectSize - 1) / 2,
+      points[i]['yPixel'] - (rectSize - 1) / 2,
+      rectSize, rectSize)
+    ctx.fill()
+  }
 }
 
 setSubmitListener()
@@ -309,20 +348,35 @@ console.log('listeners set')
 
 // REMOVE WHEN DONE DEVELOPING OR REPLACE WITH LOCATION DETECTION
 document.querySelector('#submit-search').click()
+
 setTimeout(function () {
   console.log(getPixelCoords(0, 0))
   console.log(getPixelCoords(324, 0))
   console.log(getPixelCoords(0, 324))
   console.log(getPixelCoords(324, 324))
-}, 250)
 
-let savedGridPoints
-if (localStorage.getItem('savedGridPoints')) {
-  savedGridPoints = JSON.parse(localStorage.getItem('savedGridPoints'))
-} else {
-  setTimeout(async function () {
-    savedGridPoints = await getPointsNearLoc()
-    localStorage.setItem('savedGridPoints', JSON.stringify(savedGridPoints))
-  }, 250)
-}
 
+  var savedGridPoints
+  if (localStorage.getItem('savedGridPoints')) {
+    savedGridPoints = JSON.parse(localStorage.getItem('savedGridPoints'))
+  } else {
+    setTimeout(async function () {
+      savedGridPoints = await getPointsNearLoc()
+      localStorage.setItem('savedGridPoints', JSON.stringify(savedGridPoints))
+    }, 250)
+  }
+
+  console.log(savedGridPoints)
+  savedGridPoints.forEach((point) => {
+    console.log(point.data.name)
+    console.log(point.data.coord)
+  })
+  let gridPointVals = getGridPointVals(savedGridPoints, 'temp')
+  console.log(gridPointVals)
+  let gridValRange = getGridValRange(gridPointVals)
+  console.log(gridValRange)
+  let gridRGBs = getPointRGBs(gridPointVals, gridValRange, viridisRGB)
+  console.log(gridRGBs)
+  plotPointRGBs(gridPointVals, gridRGBs)
+
+}, 500)

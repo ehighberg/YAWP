@@ -69,6 +69,10 @@ p {
   justify-content: space-around;
 }
 
+#weather-info > * > * {
+  padding-top: 0.1em;
+}
+
 @media (min-width: 560px) {
 
   body {

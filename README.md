@@ -49,7 +49,7 @@ YAWP is a simple weather service querying app, with native generation and render
 | Map searched location | H | 3hrs | 5hrs | |
 | Responsive CSS / map size | H | 2hrs | 1.5hrs| |
 | Saving favorite searches | M | 1.5hrs | 1hrs| |
-| Render temperature gradient | H | 4hrs | 4hrs| |
+| Render temperature gradient | H | 4hrs | 6hrs| |
 | Other climate gradients | M | 1hr | | |
 | Pressure fronts | L | 3hrs | | |
 
