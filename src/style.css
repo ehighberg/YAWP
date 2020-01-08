@@ -99,6 +99,13 @@ p {
 
 @media (min-width: 1025px) {
   canvas {
+    max-width: 70vh;
+    max-height: 70vh;
+  }
+} 
+
+@media (min-width: 1601px) {
+  canvas {
     max-height: 80vh;
     max-width: 80vh;
   }

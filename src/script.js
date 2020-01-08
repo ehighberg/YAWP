@@ -224,16 +224,17 @@ const populateLoadOptions = () => {
 
 const setLoadListener = () => {
   let loadDropDown = document.querySelector('#load-query')
-  loadDropDown.addEventListener('click', loadOption)
+  loadDropDown.addEventListener('change', loadOption)
 }
 
 const loadOption = () => {
   let selectedOption = document.querySelector('#load-query').value
-  print(selectedOption)
-  let selectedLocation = localStorage.getItem(selectedOption)
-  let userSearchBar = document.querySelector('#user-search-query')
-  userSearchBar.value = selectedLocation
-  executeUserQuery()
+  if (selectedOption != 'pick-query') {
+    let selectedLocation = localStorage.getItem(selectedOption)
+    let userSearchBar = document.querySelector('#user-search-query')
+    userSearchBar.value = selectedLocation
+    executeUserQuery()
+  }
 }
 
 const getPixelCoords = (xPixel, yPixel) => {
@@ -422,9 +423,8 @@ const interpolatePoints = (points, distinctVals, xORy) => {
 
 async function plotHeatMap(elementOfWeather) {
   let gridPoints = await getPointsNearLoc()
-  let gridPointVals
   console.log(gridPoints)
-  gridPointVals = getGridPointVals(gridPoints, elementOfWeather)
+  let gridPointVals = getGridPointVals(gridPoints, elementOfWeather)
   console.log(gridPointVals)
   let gridValRange = getGridValRange(gridPointVals)
   console.log(gridValRange)
