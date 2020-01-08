@@ -35,7 +35,7 @@ YAWP is a simple weather service querying app, with native generation and render
 |Jan 5th| Main Page (searchbar, current weather) | Complete
 |Jan 6th| Map View | Complete
 |Jan 7th| MVP (Rendered climate map, saved favorites) | Complete
-|Jan 8th| Forecasts / Info Filtering | Incomplete
+|Jan 8th| Forecasts / Info Filtering | Complete
 |Jan 9th| Present | Incomplete
 
 
@@ -51,6 +51,8 @@ YAWP is a simple weather service querying app, with native generation and render
 | Saving favorite searches | M | 1.5hrs | 1hrs | |
 | Render temperature gradient | H | 4hrs | 8hrs | |
 | Other climate gradients | M | 1hr | 1hrs | |
+| Selectable forecast | L | 2hrs | 1hrs | |
+| More styling | M | 2hrs | | |
 
 ## Change Log
 
@@ -63,3 +65,4 @@ YAWP is a simple weather service querying app, with native generation and render
 
 ### [0.3] - 2020-01-08
 - Removed pressure fronts
+- Added selectable forecast

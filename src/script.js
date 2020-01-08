@@ -12,11 +12,11 @@ const responseMap = {
     'humidity': (response) => { return parseHumidity(response.data.main.humidity) }
   },
   'weather-forecast': {
-    'temp': (response) => { return kelvinToF(response.data.list[0].main.temp) },
-    'precip': (response) => { return parsePrecip(response.data.list[0].weather[0]) },
-    'wind': (response) => { return parseWind(response.data.list[0].wind) },
-    'clouds': (response) => { return parseClouds(response.data.list[0].clouds) },
-    'humidity': (response) => { return parseHumidity(response.data.list[0].main.humidity) }
+    'temp': (response, forecastNum) => { return kelvinToF(response.data.list[forecastNum].main.temp) },
+    'precip': (response, forecastNum) => { return parsePrecip(response.data.list[forecastNum].weather[0]) },
+    'wind': (response, forecastNum) => { return parseWind(response.data.list[forecastNum].wind) },
+    'clouds': (response, forecastNum) => { return parseClouds(response.data.list[forecastNum].clouds) },
+    'humidity': (response, forecastNum) => { return parseHumidity(response.data.list[forecastNum].main.humidity) }
   }
 }
 
@@ -25,7 +25,22 @@ const elementsOfWeather = {
   'Pressure': (point) => { return point.data.main.pressure },
   'Humidity': (point) => { return point.data.main.humidity },
   'Wind': (point) => { return point.data.wind.speed}
-  }
+}
+  
+const numToMonthName = {
+  1: 'Jan',
+  2: 'Feb',
+  3: 'Mar',
+  4: 'Apr',
+  5: 'May',
+  6: 'Jun',
+  7: 'Jul',
+  8: 'Aug',
+  9: 'Sep',
+  10: 'Oct',
+  11: 'Nov',
+  12: 'Dec'
+}
 
 const windDirMap = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N']
 
@@ -42,8 +57,10 @@ let zoomLevel = 8
 let samplesPerXY = 7
 let rectSize = 9
 let extraIterations = 2
+let lastSelectedForecast = 0
 let selectedOverlay
 let lastResponse
+let lastForecast
 
 
 const print = (message) => { console.log(message) }
@@ -91,14 +108,17 @@ async function executeUserQuery() {
 
   let currentWeatherQuery = weatherApiUrl + 'weather' + userQuery + weatherApiKey
   let responseCurrent = await getQueryResponse(currentWeatherQuery)
-  // console.log(responseCurrent)
+  console.log(responseCurrent)
   displayWeather(responseCurrent, 'current-weather')
+
   lastResponse = await responseCurrent
 
   let forecastWeatherQuery = weatherApiUrl + 'forecast' + userQuery + weatherApiKey
   let responseForecast = await getQueryResponse(forecastWeatherQuery)
-  // console.log(responseForecast)
-  displayWeather(responseForecast, 'weather-forecast')
+  console.log(responseForecast)
+  lastSelectedForecast = 0
+  displayWeather(responseForecast, 'weather-forecast', lastSelectedForecast)
+  lastForecast = responseForecast
 
   let mapQuery = await queryMapBox(responseCurrent, zoomLevel)
   displayMap(mapQuery, 1.0)
@@ -108,20 +128,54 @@ async function executeUserQuery() {
   }
 }
 
-const displayWeather = (response, currentOrForecast) => {
+const populateForecastDropdown = (response) => {
+  let forecastColumn = document.querySelector('#weather-forecast')
+  forecastColumn.innerHTML = ''
+
+  let forecastDropDown = document.createElement('select')
+  forecastDropDown.id = 'forecast'
+  forecastDropDown.name = 'forecast'
+  forecastDropDown.setAttribute('onchange', 'setForecast(this)')
+  response.data.list.forEach((forecast, index) => {
+    let newOption = document.createElement('option')
+    let forecastTime = humanReadableTime(forecast.dt)
+    newOption.id = `forecast-${index}`
+    newOption.textContent = forecastTime
+    newOption.className = 'date-time'
+    forecastDropDown.appendChild(newOption)
+  })
+  forecastColumn.appendChild(forecastDropDown)
+  // console.log(forecastDropDown.options)
+  forecastDropDown.options[lastSelectedForecast].selected = true
+}
+
+const displayWeather = (response, currentOrForecast, forecastNum) => {
   document.querySelector(`#${currentOrForecast}`).innerHTML = ''
+
+  if (currentOrForecast == 'current-weather') {
+    let timeField = document.createElement('p')
+    timeField.textContent = humanReadableTime(response.data.dt)
+    timeField.className = 'date-time'
+    // console.log(timeField)
+    document.querySelector('#current-weather').appendChild(timeField)
+  }
+
+  if (currentOrForecast == 'weather-forecast') {
+    populateForecastDropdown(response)
+  }
+
   fieldsToDisplay.forEach((name) => {
-    displayField(response, name, currentOrForecast)
+    displayField(response, name, currentOrForecast, forecastNum)
   })
 }
 
-const displayField = (response, name, currentOrForecast) => {
+const displayField = (response, name, currentOrForecast, forecastNum) => {
   // print(currentOrForecast)
   let displayContainer = document.querySelector(`#${currentOrForecast}`)
 
   let newField = document.createElement('p')
 
-  newField.innerHTML = responseMap[currentOrForecast][name](response)
+  newField.innerHTML = responseMap[currentOrForecast][name](response, forecastNum)
   newField.className = name
 
   displayContainer.append(newField)
@@ -264,6 +318,13 @@ const setOverlayListener = () => {
 const setOverlay = () => {
   selectedOverlay = document.querySelector('#map-overlay').value
   plotHeatMap(selectedOverlay)
+}
+
+
+const setForecast = (dropDown) => {
+  // console.log(dropDown.selectedIndex)
+  lastSelectedForecast = dropDown.selectedIndex
+  displayWeather(lastForecast, 'weather-forecast', dropDown.selectedIndex)
 }
 
 const getPixelCoords = (xPixel, yPixel) => {
@@ -464,6 +525,17 @@ async function plotHeatMap(elementOfWeather) {
   let gridValRange = getGridValRange(gridPointVals)
   // console.log(gridValRange)
   interpolateRGBs(gridPointVals, gridValRange, viridisRGB)
+}
+
+const humanReadableTime = (unixTime) => {
+  let timestamp = new Date(unixTime * 1000)
+  let month = timestamp.getMonth() + 1
+  let day = timestamp.getDate()
+  let hours = timestamp.getHours()
+  let minutes = timestamp.getMinutes()
+  minutes = (minutes / 10) < 1 ? `0${minutes}` : minutes
+  hours = (hours / 12) > 1 ? `${hours - 12}:${minutes} PM` : `${hours}:${minutes} AM`
+  return `${numToMonthName[month]} ${day}, ${hours}`
 }
 
 

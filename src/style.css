@@ -44,6 +44,10 @@ p {
   margin: 0.2em;
 }
 
+.date-time {
+  font-size: 1.1em;
+}
+
 .fa {
   color: black;
 }
