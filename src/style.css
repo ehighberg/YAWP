@@ -13,6 +13,8 @@ canvas {
   max-height: 50vh;
   max-width: 50vh;
   margin-top: 2vh;
+  border: 3px solid black;
+  border-radius: 5px;
 }
 
 footer {
@@ -27,6 +29,7 @@ header {
   padding-top: 2vh;
   padding-bottom: 2vh;
   flex-flow: column;
+  background-color: #eeeeee99;
 }
 
 header, main, footer {
@@ -42,6 +45,10 @@ p {
   font-size: 1.3rem;
   height: 1.3rem;
   margin: 0.2em;
+}
+
+.clouds {
+  font-size: 1.2em;
 }
 
 .date-time {
@@ -62,9 +69,22 @@ p {
   padding: 0 0.5em;
 }
 
+.weather-display {
+  background-color: #ffffff99;
+  padding: 0.4em 0.2em;
+  border-radius: 0.5em;
+  border: 2px solid black ;
+}
+
 #contact {
   width: 100%;
   font-size: small;
+}
+
+#current-weather > .date-time {
+  border: 1px solid #222222;
+  background-color: #f8f8f8;
+  margin: 0.2em 0;
 }
 
 #weather-info {

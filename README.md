@@ -43,16 +43,16 @@ YAWP is a simple weather service querying app, with native generation and render
 | Component | Priority | Estimated Time | Time Invested | Actual Time |
 | --- | :---: |  :---: | :---: | :---: |
 | HTML structure | H | 2hrs | 1.75hrs | 1.5hrs |
-| Basic styling | H | 3hrs | 1hrs | |
-| Display searched weather | H | 3hrs | 3.5hrs | |
-| Get forecasts from API | H | 2hrs  | 1hrs | |
-| Map searched location | H | 3hrs | 5hrs | |
-| Responsive CSS / map size | H | 2hrs | 1.5hrs | |
-| Saving favorite searches | M | 1.5hrs | 1hrs | |
-| Render temperature gradient | H | 4hrs | 8hrs | |
-| Other climate gradients | M | 1hr | 1hrs | |
-| Selectable forecast | L | 2hrs | 1hrs | |
-| More styling | M | 2hrs | | |
+| Basic styling | H | 3hrs | 1hrs | 1hrs |
+| Display searched weather | H | 3hrs | 3.5hrs | 3.5hrs|
+| Get forecasts from API | H | 2hrs  | 1hrs | 1hrs |
+| Map searched location | H | 3hrs | 5hrs | 5hrs |
+| Responsive CSS / map size | H | 2hrs | 1.5hrs | 1.5hrs |
+| Saving favorite searches | M | 1.5hrs | 1hrs | 1hrs |
+| Render temperature gradient | H | 4hrs | 8hrs | 8hrs |
+| Other climate gradients | M | 1hr | 1hrs | 1hrs |
+| Selectable forecast | L | 2hrs | 2hrs | 2hrs |
+| More styling | M | 2hrs | 3hrs | 3hrs |
 
 ## Change Log
 

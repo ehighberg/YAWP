@@ -42,6 +42,15 @@ const numToMonthName = {
   12: 'Dec'
 }
 
+const weatherCodeBackgrounds = {
+  2: 'https://images.unsplash.com/photo-1429552077091-836152271555',
+  3: 'https://images.unsplash.com/photo-1489781879256-fa824b56f24f',
+  5: 'https://images.unsplash.com/photo-1515694346937-94d85e41e6f0',
+  6: 'https://images.unsplash.com/photo-1511131341194-24e2eeeebb09',
+  7: 'https://images.unsplash.com/photo-1500930628836-abc0d1417033',
+  8: 'https://images.unsplash.com/photo-1499346030926-9a72daac6c63'
+}
+
 const windDirMap = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N']
 
 const cloudCoverMap = ['Clear', 'Partly cloudy', 'Mostly cloudy', 'Overcast']
@@ -110,6 +119,7 @@ async function executeUserQuery() {
   let responseCurrent = await getQueryResponse(currentWeatherQuery)
   console.log(responseCurrent)
   displayWeather(responseCurrent, 'current-weather')
+  updateBackground(responseCurrent)
 
   lastResponse = await responseCurrent
 
@@ -537,6 +547,14 @@ const humanReadableTime = (unixTime) => {
   return `${numToMonthName[month]} ${day}, ${hours}`
 }
 
+const updateBackground = (response) => {
+  let body = document.querySelector('body')
+  let weatherCode = Math.floor(response.data.weather[0].id / 100)
+  console.log(weatherCode)
+  body.style.backgroundColor = '#00000000'
+  body.style.backgroundImage = `url(${weatherCodeBackgrounds[weatherCode]})`
+}
+
 
 setSubmitListener()
 setSaveListener()
@@ -547,4 +565,4 @@ setOverlayListener()
 console.log('listeners set')
 
 // REMOVE WHEN DONE DEVELOPING OR REPLACE WITH LOCATION DETECTION
-// document.querySelector('#submit-search').click()
+document.querySelector('#submit-search').click()
