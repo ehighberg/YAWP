@@ -107,10 +107,6 @@ p {
     justify-content: space-around;
   }
 
-  header {
-    height: 4em;
-  }
-
   canvas {
     max-width: 80vh;
     max-height: 80vh;
