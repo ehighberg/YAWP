@@ -12,7 +12,7 @@ canvas {
   height: 90vw;
   max-height: 50vh;
   max-width: 50vh;
-  margin-top: 2vh;
+  margin-top: 0.5vh;
   border: 3px solid black;
   border-radius: 5px;
 }
@@ -27,7 +27,7 @@ footer {
 
 header {
   padding-top: 2vh;
-  padding-bottom: 2vh;
+  padding-bottom: 1vh;
   flex-flow: column;
   background-color: #eeeeee99;
 }
@@ -71,7 +71,7 @@ p {
 
 .weather-display {
   background-color: #ffffff99;
-  padding: 0.4em 0.2em;
+  padding: 0.2em 0.2em;
   border-radius: 0.5em;
   border: 2px solid black ;
 }
