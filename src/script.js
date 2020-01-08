@@ -1,4 +1,4 @@
-const weatherApiUrl = "http://api.openweathermap.org/data/2.5/"
+const weatherApiUrl = "https://api.openweathermap.org/data/2.5/"
 const weatherApiKey = '&appid=' + '3e1f7aa5c8683821e7604c5eb70b0985'
 
 const fieldsToDisplay = ['temp', 'precip', 'wind', 'clouds', 'humidity']
@@ -224,7 +224,6 @@ async function queryMapBox(weatherResponse, zoomLevel) {
   let mapHeight = mapCanvas.scrollHeight
 
   let queryString = `${mapApiUrl}${queryLon},${queryLat},${zoomLevel}/${mapWidth}x${mapHeight}${mapApiKey}`
-  print(queryString)
   let mapImg = new Image(mapWidth, mapHeight)
   mapImg.src = queryString
   return mapImg
@@ -548,10 +547,4 @@ setOverlayListener()
 console.log('listeners set')
 
 // REMOVE WHEN DONE DEVELOPING OR REPLACE WITH LOCATION DETECTION
-document.querySelector('#submit-search').click()
-
-setTimeout(function () {
-
-  // plotHeatMap('Wind')
-
-}, 500)
+// document.querySelector('#submit-search').click()
