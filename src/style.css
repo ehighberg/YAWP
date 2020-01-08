@@ -112,8 +112,8 @@ p {
   }
 
   canvas {
-    max-width: 50vh;
-    max-height: 50vh;
+    max-width: 80vh;
+    max-height: 80vh;
   }
 
   main {
