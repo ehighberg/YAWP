@@ -76,7 +76,11 @@ const print = (message) => { console.log(message) }
 
 const setSubmitListener = () => {
   let submitButton = document.querySelector('#submit-search')
-  submitButton.addEventListener('click', executeUserQuery)
+  submitButton.addEventListener('click', function () {
+    let userQuery = getUserInput()
+    event.preventDefault()
+    executeUserQuery(userQuery)
+  })
 }
 
 const getUserInput = () => {
@@ -87,11 +91,11 @@ const getUserInput = () => {
 
 const parseUserQuery = (userQuery) => {
   let queryParts = userQuery.split(',')
-  // print(queryParts)
+  // console.log(queryParts)
   if (queryParts.length == 1) {
     return '?q=' + queryParts[0].trim()
   } else if (queryParts.length == 2) {
-    return `?lat=${queryParts[1].trim()}&lon=${queryParts[0].trim()}`
+    return `?lat=${queryParts[0].trim()}&lon=${queryParts[1].trim()}`
   } else {
     alert('Invalid query, check formatting')
     return false
@@ -100,6 +104,7 @@ const parseUserQuery = (userQuery) => {
 
 async function getQueryResponse(query) {
   let queryResponse
+  // console.log(query)
   await axios.get(query)
     .then((response) => {
       // print(response)
@@ -111,10 +116,8 @@ async function getQueryResponse(query) {
   return queryResponse
 }
 
-async function executeUserQuery() {
-  event.preventDefault()
-  let userQuery = getUserInput()
-
+async function executeUserQuery(userQuery) {
+  console.log(userQuery)
   let currentWeatherQuery = weatherApiUrl + 'weather' + userQuery + weatherApiKey
   let responseCurrent = await getQueryResponse(currentWeatherQuery)
   console.log(responseCurrent)
@@ -304,7 +307,7 @@ const loadOption = () => {
     let selectedLocation = localStorage.getItem(selectedOption)
     let userSearchBar = document.querySelector('#user-search-query')
     userSearchBar.value = selectedLocation
-    executeUserQuery()
+    executeUserQuery(parseUserQuery(selectedLocation))
   }
 }
 
@@ -555,6 +558,32 @@ const updateBackground = (response) => {
   body.style.backgroundImage = `url(${weatherCodeBackgrounds[weatherCode]})`
 }
 
+async function geoFindMe() {
+  console.log('finding you')
+  // From https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API
+  function success(position) {
+    console.log(position)
+    const latitude  = position.coords.latitude
+    const longitude = position.coords.longitude
+
+    console.log(`Latitude: ${latitude} °, Longitude: ${longitude} °`)
+    let latLonQuery = `${latitude}, ${longitude}`
+    executeUserQuery(parseUserQuery(latLonQuery))
+  }
+
+  function error() {
+    console.log('Error!')
+    alert('Unable to retrieve your location')
+  }
+
+  if (!navigator.geolocation) {
+    alert('Geolocation is not supported by your browser')
+  } else {
+    console.log('geolocating...')
+    navigator.geolocation.getCurrentPosition(success, error)
+    console.log('located')
+  }
+}
 
 setSubmitListener()
 setSaveListener()
@@ -563,3 +592,5 @@ setLoadListener()
 populateOverlayOptions()
 setOverlayListener()
 console.log('listeners set')
+
+geoFindMe()

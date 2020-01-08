@@ -53,6 +53,7 @@ YAWP is a simple weather service querying app, with native generation and render
 | Other climate gradients | M | 1hr | 1hrs | 1hrs |
 | Selectable forecast | L | 2hrs | 2hrs | 2hrs |
 | More styling | M | 2hrs | 3hrs | 3hrs |
+| Location detection | L | 2hrs | 3hrs | 3hrs |
 
 ## Change Log
 
@@ -65,4 +66,4 @@ YAWP is a simple weather service querying app, with native generation and render
 
 ### [0.3] - 2020-01-08
 - Removed pressure fronts
-- Added selectable forecast, background images
+- Added selectable forecast, background images, location detection
