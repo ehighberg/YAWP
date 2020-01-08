@@ -2,7 +2,7 @@ body {
   text-align: center;
   width: 100%;
   font-family: 'Merriweather', serif;
-  background-color: #baf7f7;
+  background-image: url('https://images.unsplash.com/photo-1499346030926-9a72daac6c63');
   display: flex;
   flex-flow: column;
 }

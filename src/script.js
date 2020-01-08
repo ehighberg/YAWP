@@ -563,6 +563,3 @@ setLoadListener()
 populateOverlayOptions()
 setOverlayListener()
 console.log('listeners set')
-
-// REMOVE WHEN DONE DEVELOPING OR REPLACE WITH LOCATION DETECTION
-document.querySelector('#submit-search').click()

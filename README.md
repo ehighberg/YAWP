@@ -65,4 +65,4 @@ YAWP is a simple weather service querying app, with native generation and render
 
 ### [0.3] - 2020-01-08
 - Removed pressure fronts
-- Added selectable forecast
+- Added selectable forecast, background images
