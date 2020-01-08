@@ -21,7 +21,10 @@ const responseMap = {
 }
 
 const elementsOfWeather = {
-  'temp': (point) => { return (point.data.main.temp - 273.15) * 1.8 + 32 }
+  'Temperature': (point) => { return (point.data.main.temp - 273.15) * 1.8 + 32 },
+  'Pressure': (point) => { return point.data.main.pressure },
+  'Humidity': (point) => { return point.data.main.humidity },
+  'Wind': (point) => { return point.data.wind.speed}
   }
 
 const windDirMap = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N']
@@ -39,6 +42,7 @@ let zoomLevel = 8
 let samplesPerXY = 7
 let rectSize = 9
 let extraIterations = 2
+let selectedOverlay
 let lastResponse
 
 
@@ -87,17 +91,21 @@ async function executeUserQuery() {
 
   let currentWeatherQuery = weatherApiUrl + 'weather' + userQuery + weatherApiKey
   let responseCurrent = await getQueryResponse(currentWeatherQuery)
-  console.log(responseCurrent)
+  // console.log(responseCurrent)
   displayWeather(responseCurrent, 'current-weather')
   lastResponse = await responseCurrent
 
   let forecastWeatherQuery = weatherApiUrl + 'forecast' + userQuery + weatherApiKey
   let responseForecast = await getQueryResponse(forecastWeatherQuery)
-  print(responseForecast)
+  // console.log(responseForecast)
   displayWeather(responseForecast, 'weather-forecast')
 
   let mapQuery = await queryMapBox(responseCurrent, zoomLevel)
   displayMap(mapQuery, 1.0)
+
+  if (selectedOverlay) {
+    plotHeatMap(selectedOverlay)
+  }
 }
 
 const displayWeather = (response, currentOrForecast) => {
@@ -207,7 +215,7 @@ const saveQuery = () => {
 const populateLoadOptions = () => {
   let loadDropDown = document.querySelector('#load-query')
   let savedQueryNames = Object.keys(localStorage)
-  print(savedQueryNames)
+  // console.log(savedQueryNames)
 
   if (savedQueryNames.length == 0) {
     localStorage.setItem('Save a search', 'Save a search')
@@ -235,6 +243,27 @@ const loadOption = () => {
     userSearchBar.value = selectedLocation
     executeUserQuery()
   }
+}
+
+const populateOverlayOptions = () => {
+  let overlayDropDown = document.querySelector('#map-overlay')
+  let overlayNames = Object.keys(elementsOfWeather)
+  overlayNames.forEach((overlayName) => {
+    let newOverlay = document.createElement('option')
+    newOverlay.value = overlayName
+    newOverlay.innerHTML = overlayName
+    overlayDropDown.appendChild(newOverlay)
+  })
+}
+
+const setOverlayListener = () => {
+  let overlayDropDown = document.querySelector('#map-overlay')
+  overlayDropDown.addEventListener('change', setOverlay)
+}
+
+const setOverlay = () => {
+  selectedOverlay = document.querySelector('#map-overlay').value
+  plotHeatMap(selectedOverlay)
 }
 
 const getPixelCoords = (xPixel, yPixel) => {
@@ -422,12 +451,18 @@ const interpolatePoints = (points, distinctVals, xORy) => {
 }
 
 async function plotHeatMap(elementOfWeather) {
+  let canvas = document.querySelector('canvas')
+  let ctx = canvas.getContext('2d')
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  let mapQuery = await queryMapBox(lastResponse, zoomLevel)
+  displayMap(mapQuery, 1.0)
+
   let gridPoints = await getPointsNearLoc()
-  console.log(gridPoints)
+  // console.log(gridPoints)
   let gridPointVals = getGridPointVals(gridPoints, elementOfWeather)
-  console.log(gridPointVals)
+  // console.log(gridPointVals)
   let gridValRange = getGridValRange(gridPointVals)
-  console.log(gridValRange)
+  // console.log(gridValRange)
   interpolateRGBs(gridPointVals, gridValRange, viridisRGB)
 }
 
@@ -436,6 +471,8 @@ setSubmitListener()
 setSaveListener()
 populateLoadOptions()
 setLoadListener()
+populateOverlayOptions()
+setOverlayListener()
 console.log('listeners set')
 
 // REMOVE WHEN DONE DEVELOPING OR REPLACE WITH LOCATION DETECTION
@@ -443,6 +480,6 @@ document.querySelector('#submit-search').click()
 
 setTimeout(function () {
 
-  plotHeatMap('temp')
+  // plotHeatMap('Wind')
 
 }, 500)

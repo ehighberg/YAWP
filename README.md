@@ -50,8 +50,7 @@ YAWP is a simple weather service querying app, with native generation and render
 | Responsive CSS / map size | H | 2hrs | 1.5hrs | |
 | Saving favorite searches | M | 1.5hrs | 1hrs | |
 | Render temperature gradient | H | 4hrs | 8hrs | |
-| Other climate gradients | M | 1hr | | |
-| Pressure fronts | L | 3hrs | | |
+| Other climate gradients | M | 1hr | 1hrs | |
 
 ## Change Log
 
@@ -61,3 +60,6 @@ YAWP is a simple weather service querying app, with native generation and render
 
 ### [0.2] - 2020-01-06
 - Removed clickable markers from project
+
+### [0.3] - 2020-01-08
+- Removed pressure fronts
