@@ -7,6 +7,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
+  <meta property="og:title" content="YAWP (Yet Another Weather Provider)">
+  <meta property="og:description" content="Current weather, forecasts, saved locations, and heatmaps.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1515694346937-94d85e41e6f0">
+  <meta property="og:url" content="https://pages.git.generalassemb.ly/ehighberg/YAWP/">
+
   <link rel="stylesheet" href="src/reset.css" type="text/css">
   <link rel="stylesheet" href="src/style.css" type="text/css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -27,7 +32,7 @@
         <input type='button' value='Save' id='save-query'>
 
         <select id='load-query' name='load-query'>
-            <option value='pick-query'>Load</option>
+          <option value='pick-query'>Load</option>
         </select>
 
         <select id='map-overlay' name='map-overlay'>
@@ -41,7 +46,7 @@
       <div id='current-weather' class='weather-display'></div>
       <div id='weather-forecast' class='weather-display'></div>
     </aside>
-</div>
+  </div>
 
   <main>
     <canvas id='canvas'></canvas>
