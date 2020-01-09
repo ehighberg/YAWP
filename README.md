@@ -36,7 +36,7 @@ YAWP is a simple weather service querying app, with native generation and render
 |Jan 6th| Map View | Complete
 |Jan 7th| MVP (Rendered climate map, saved favorites) | Complete
 |Jan 8th| Forecasts / Info Filtering | Complete
-|Jan 9th| Present | Incomplete
+|Jan 9th| Present | Complete
 
 
 ## Timeframes
