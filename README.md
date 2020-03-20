@@ -1,4 +1,4 @@
-# [YAWP](https://pages.git.generalassemb.ly/ehighberg/YAWP/)
+# [YAWP](https://ehighberg.github.io/YAWP/)
 
 
 ## Project Description
