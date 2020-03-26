@@ -85,6 +85,13 @@ p {
   border: 1px solid #222222;
   background-color: #f8f8f8;
   margin: 0.2em 0;
+  border-radius: 5px;
+}
+
+#weather-forecast > select {
+  font-size: 1.2rem;
+  background-color: white;
+  border-radius: 5px;
 }
 
 #weather-info {
@@ -122,7 +129,15 @@ p {
     max-width: 60vh;
     max-height: 60vh;
   }
-} 
+
+  #weather-info > div > * {
+    margin-bottom: 2rem;
+  }
+
+  #current-weather > .date-time {
+    margin-bottom: 2rem;
+  }
+}
 
 @media (min-width: 1601px) {
   canvas {
@@ -135,5 +150,9 @@ p {
     flex-flow: row;
     justify-content: space-around;
     width: 50vw;
+  }
+
+  #current-weather {
+    margin-right: 6rem;
   }
 }

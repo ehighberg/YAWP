@@ -26,7 +26,7 @@ const elementsOfWeather = {
   'Humidity': (point) => { return point.data.main.humidity },
   'Wind': (point) => { return point.data.wind.speed}
 }
-  
+
 const numToMonthName = {
   1: 'Jan',
   2: 'Feb',
@@ -110,7 +110,7 @@ async function getQueryResponse(query) {
       // print(response)
       queryResponse = response
     }).catch((error) => {
-      alert('Invalid search criteria, please try a city name, zipcode, or lat / long.')
+      alert('Invalid search criteria, please try a city name or lat, long.')
       print(error)
     }).finally()
   return queryResponse
@@ -251,7 +251,7 @@ function displayMap(map, opacity) {
     mapCanvas2DContext.drawImage(map, 0, 0)
     mapCanvas2DContext.restore()
   }
-  
+
 }
 
 const setCanvasDims = () => {
@@ -413,7 +413,7 @@ const getGridPointVals = (gridPoints, paramToPlot) => {
       xPixel: getCoordPixel(0, gridPoint.data.coord.lon)['x'],
       yPixel: getCoordPixel(gridPoint.data.coord.lat, 0)['y']
     }
-    pointVals.push(pointStats)    
+    pointVals.push(pointStats)
   })
   pointVals.sort((a, b) => {return a.val - b.val})
   return pointVals
@@ -499,7 +499,7 @@ const interpolatePoints = (points, distinctVals, xORy) => {
   let otherOfXOrY = (xORy == 'x') ? 'y' : 'x'
   let newPoints = []
   distinctVals.forEach((value) => {
-    let oldPointsInLine = points.filter((point) => 
+    let oldPointsInLine = points.filter((point) =>
       point[`${xORy}Pixel`] == value
     )
 
